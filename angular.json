@@ -3,5 +3,46 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-  }
+    "rxjs": {
+      "projectType": "library",
+      "root": "projects/rxjs",
+      "sourceRoot": "projects/rxjs/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/rxjs/tsconfig.lib.json",
+            "project": "projects/rxjs/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/rxjs/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/rxjs/src/test.ts",
+            "tsConfig": "projects/rxjs/tsconfig.spec.json",
+            "karmaConfig": "projects/rxjs/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/rxjs/tsconfig.lib.json",
+              "projects/rxjs/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "rxjs"
 }
