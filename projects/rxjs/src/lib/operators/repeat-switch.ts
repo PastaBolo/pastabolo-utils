@@ -1,5 +1,5 @@
-import { asapScheduler, identity, merge, MonoTypeOperatorFunction, noop, Observable, of, pipe } from 'rxjs';
-import { last, observeOn, repeat, share, switchMapTo } from 'rxjs/operators';
+import { asapScheduler, identity, MonoTypeOperatorFunction, noop, Observable, pipe } from 'rxjs';
+import { last, observeOn, repeat, share, startWith, switchMapTo } from 'rxjs/operators';
 
 /**
  * Returns an Observable that mirrors the source Observable. 
@@ -31,11 +31,10 @@ export function repeatSwitch<T>(
   return pipe(
     observeOn(asapScheduler), // Deferring is required to make sure that the source is really shared between the subscriptions even if source is cold and emits values and completes synchronously (like 'of' observable)
     share(),
-    source => merge(
-      notifier(source.pipe(last())).pipe(
-        repeatOnNotifierComplete ? repeat() : identity
-      ),
-      of(noop)
-    ).pipe(switchMapTo(source))
+    source => notifier(source.pipe(last())).pipe(
+      repeatOnNotifierComplete ? repeat() : identity,
+      startWith(noop),
+      switchMapTo(source)
+    )
   );
 }
