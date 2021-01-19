@@ -1,9 +1,26 @@
 {
-  "name": "rxjs",
+  "name": "@pastabolo/rxjs",
   "version": "0.0.1",
+  "description": "Utilities that enhance the power of RxJS 🚀",
+  "homepage": "https://github.com/PastaBolo/pastabolo-utils/tree/main/projects/rxjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PastaBolo/pastabolo-utils/tree/main/projects/rxjs"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "rxjs",
+    "operator",
+    "operators",
+    "repeatSwitchMap",
+    "cache"
+  ],
+  "author": "PastaBolo",
+  "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "^11.0.5",
-    "@angular/core": "^11.0.5"
+    "rxjs": "^6.6.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
