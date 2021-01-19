@@ -4,9 +4,9 @@ import { delay } from 'rxjs/operators';
 import { createObservableWithValues } from 'jasmine-auto-spies';
 import { SubscriberSpy, subscribeSpyTo } from '@hirez_io/observer-spy';
 
-import { repeatSwitch } from './repeat-switch';
+import { repeatSwitchMap } from './repeat-switch';
 
-describe('repeatSwitch', () => {
+describe('repeatSwitchMap', () => {
   let repeat$: Subject<void>;
   let source$: Observable<any>;
   let observerSpy: SubscriberSpy<any>;
@@ -22,7 +22,7 @@ describe('repeatSwitch', () => {
 
     When(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitch(() => repeat$))
+        source$.pipe(repeatSwitchMap(() => repeat$))
       );
       tick();
       repeat$.next();
@@ -44,7 +44,7 @@ describe('repeatSwitch', () => {
 
     When(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitch(() => repeat$))
+        source$.pipe(repeatSwitchMap(() => repeat$))
       );
       tick(100);
       repeat$.next();
@@ -67,7 +67,7 @@ describe('repeatSwitch', () => {
 
     When(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitch(() => repeat$))
+        source$.pipe(repeatSwitchMap(() => repeat$))
       );
       tick(100);
     }));
@@ -93,7 +93,7 @@ describe('repeatSwitch', () => {
 
     Then(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitch(() => repeat$))
+        source$.pipe(repeatSwitchMap(() => repeat$))
       );
 
       tick(50);
@@ -131,7 +131,7 @@ describe('repeatSwitch', () => {
 
     Then(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitch(source => source.pipe(delay(200))))
+        source$.pipe(repeatSwitchMap(source => source.pipe(delay(200))))
       );
 
       tick(100);
@@ -149,7 +149,7 @@ describe('repeatSwitch', () => {
 
   describe(`GIVEN the source emits multiple values over time
             WHEN subscribing to source AND triggering repeat after the first value is emitted
-            THEN repeatSwitch resubscribes to source and completes the previous subscription`, () => {
+            THEN repeatSwitchMap resubscribes to source and completes the previous subscription`, () => {
     Given(() => {
       source$ = createObservableWithValues([
         { value: 1, delay: 100 },
@@ -159,7 +159,7 @@ describe('repeatSwitch', () => {
 
     Then(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitch(() => repeat$))
+        source$.pipe(repeatSwitchMap(() => repeat$))
       );
       expect(observerSpy.getValues()).toEqual([]);
       tick(100);
@@ -177,7 +177,7 @@ describe('repeatSwitch', () => {
 
       When(fakeAsync(() => {
         observerSpy = subscribeSpyTo(
-          source$.pipe(repeatSwitch(() => timer(200), { repeatOnNotifierComplete }))
+          source$.pipe(repeatSwitchMap(() => timer(200), { repeatOnNotifierComplete }))
         );
         tick(800);
         observerSpy.unsubscribe();
@@ -187,7 +187,7 @@ describe('repeatSwitch', () => {
 
         describe(`GIVEN the source never completes 
                   WHEN subscribing to source 
-                  THEN repeatSwitch repeats AND never completes`, () => {
+                  THEN repeatSwitchMap repeats AND never completes`, () => {
           Given(() => {
             source$ = createObservableWithValues([{ value: 1 }]);
           });
@@ -200,7 +200,7 @@ describe('repeatSwitch', () => {
 
         describe(`GIVEN the source completes
                   WHEN subscribing to source 
-                  THEN repeatSwitch repeats AND never completes`, () => {
+                  THEN repeatSwitchMap repeats AND never completes`, () => {
           Given(() => {
             source$ = createObservableWithValues([
               { value: 1 },
@@ -224,7 +224,7 @@ describe('repeatSwitch', () => {
 
         describe(`GIVEN the source does not complete
                   WHEN subscribing to source 
-                  THEN repeatSwitch repeats until the notifier completes AND never completes`, () => {
+                  THEN repeatSwitchMap repeats until the notifier completes AND never completes`, () => {
           Given(() => {
             source$ = createObservableWithValues([{ value: 1 }]);
           });
@@ -237,7 +237,7 @@ describe('repeatSwitch', () => {
 
         describe(`GIVEN the source completes
                   WHEN subscribing to source 
-                  THEN repeatSwitch repeats until the notifier completes AND completes`, () => {
+                  THEN repeatSwitchMap repeats until the notifier completes AND completes`, () => {
           Given(() => {
             source$ = createObservableWithValues([
               { value: 1 },
@@ -257,7 +257,7 @@ describe('repeatSwitch', () => {
   describe('error strategy', () => {
     When(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitch(() => repeat$)),
+        source$.pipe(repeatSwitchMap(() => repeat$)),
         { expectErrors: true }
       );
     }));

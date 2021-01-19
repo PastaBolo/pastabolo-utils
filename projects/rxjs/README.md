@@ -7,14 +7,14 @@ This library provides some operators to enhance the power of RxJS 🚀
 # Table of contents
 
 * [Operators](#operators)
-  * [repeatSwitch](#repeatSwitch)
+  * [repeatSwitchMap](#repeatSwitchMap)
   * [cache](#cache)
 
 <br>
 
 # Operators
 
-## repeatSwitch
+## repeatSwitchMap
 
 Returns an Observable that mirrors the source Observable. <br>
 This method will resubscribe to the source Observable each time the notifier emits. For each emission, the previous subscription is completed. <br>
@@ -27,14 +27,14 @@ Repeat a message stream on click
 const source$ = of('Repeat message');
 const documentClick$ = fromEvent(document, 'click');
 
-source.pipe(repeatSwitch(() => documentClick$)).subscribe(console.log);
+source.pipe(repeatSwitchMap(() => documentClick$)).subscribe(console.log);
 ```
 
 Repeat a message stream with a delay after source completion
 ```ts
 const source$ = of('Repeat message');
 
-source.pipe(repeatSwitch(complete => complete.pipe(delay(200)))).subscribe(console.log);
+source.pipe(repeatSwitchMap(complete => complete.pipe(delay(200)))).subscribe(console.log);
 ```
 
 ### Parameters
