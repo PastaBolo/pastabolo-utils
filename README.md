@@ -6,7 +6,7 @@ Libraries dealing with Angular (and its ecosystem), RxJS and many other things b
 
 ## Direct links  
 
-[RxJS](projects/rxjs)
+[RxJS utils](projects/rxjs-utils)
 
 <br>
 

@@ -1,11 +1,11 @@
 {
-  "name": "@pastabolo/rxjs",
-  "version": "0.0.2",
+  "name": "@pastabolo/rxjs-utils",
+  "version": "0.0.1",
   "description": "Utilities that enhance the power of RxJS 🚀",
-  "homepage": "https://github.com/PastaBolo/pastabolo-utils/tree/main/projects/rxjs",
+  "homepage": "https://github.com/PastaBolo/pastabolo-utils/tree/main/projects/rxjs-utils",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PastaBolo/pastabolo-utils/tree/main/projects/rxjs"
+    "url": "https://github.com/PastaBolo/pastabolo-utils/tree/main/projects/rxjs-utils"
   },
   "publishConfig": {
     "access": "public"

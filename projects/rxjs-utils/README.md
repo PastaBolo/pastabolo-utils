@@ -1,4 +1,4 @@
-# RxJS
+# RxJS utils
 
 This library provides some operators to enhance the power of RxJS 🚀
 

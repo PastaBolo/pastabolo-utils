@@ -20,9 +20,9 @@
       "dom"
     ],
     "paths": {
-      "rxjs": [
-        "dist/rxjs/rxjs",
-        "dist/rxjs"
+      "rxjs-utils": [
+        "dist/rxjs-utils/rxjs-utils",
+        "dist/rxjs-utils"
       ]
     }
   },
