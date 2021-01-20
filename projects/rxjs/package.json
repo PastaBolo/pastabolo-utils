@@ -1,6 +1,6 @@
 {
   "name": "@pastabolo/rxjs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Utilities that enhance the power of RxJS 🚀",
   "homepage": "https://github.com/PastaBolo/pastabolo-utils/tree/main/projects/rxjs",
   "repository": {
@@ -20,7 +20,7 @@
   "author": "PastaBolo",
   "license": "MIT",
   "peerDependencies": {
-    "rxjs": "^6.6.0"
+    "rxjs": "^6.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
