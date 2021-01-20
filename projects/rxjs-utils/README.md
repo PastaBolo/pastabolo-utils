@@ -6,9 +6,22 @@ This library provides some operators to enhance the power of RxJS 🚀
 
 # Table of contents
 
+* [Installation](#installation)
 * [Operators](#operators)
   * [repeatSwitchMap](#repeatSwitchMap)
   * [cache](#cache)
+
+<br>
+
+# Installation
+
+```
+npm install @pastabolo/rxjs-utils
+```
+or
+```
+yarn add @pastabolo/rxjs-utils
+```
 
 <br>
 
