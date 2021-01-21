@@ -1,2 +1,2 @@
-export * from './repeat-switch';
+export * from './repeat-switchmap';
 export * from './cache';

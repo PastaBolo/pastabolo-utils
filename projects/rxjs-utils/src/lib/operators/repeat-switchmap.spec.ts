@@ -4,7 +4,7 @@ import { delay } from 'rxjs/operators';
 import { createObservableWithValues } from 'jasmine-auto-spies';
 import { SubscriberSpy, subscribeSpyTo } from '@hirez_io/observer-spy';
 
-import { repeatSwitchMap } from './repeat-switch';
+import { repeatSwitchMap } from './repeat-switchmap';
 
 describe('repeatSwitchMap', () => {
   let repeat$: Subject<void>;

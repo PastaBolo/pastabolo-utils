@@ -1,7 +1,7 @@
 import { Observable, MonoTypeOperatorFunction, Subject, NEVER, of, noop, defer, race } from 'rxjs';
 import { delay, shareReplay, take, switchMapTo } from 'rxjs/operators';
 
-import { repeatSwitchMap } from './repeat-switch';
+import { repeatSwitchMap } from './repeat-switchmap';
 
 /**
  * Keep the last emitted values in cache for the expirationTime provided and share them with all its subscribers. 
