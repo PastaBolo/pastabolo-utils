@@ -1,6 +1,5 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 import { Observable, of, Subject, timer } from 'rxjs';
-import { delay } from 'rxjs/operators';
 import { createObservableWithValues } from 'jasmine-auto-spies';
 import { SubscriberSpy, subscribeSpyTo } from '@hirez_io/observer-spy';
 
@@ -20,15 +19,13 @@ describe('repeatSwitchMap', () => {
       source$ = of(1);
     });
 
-    When(fakeAsync(() => {
+    When(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitchMap(() => repeat$))
+        source$.pipe(repeatSwitchMap(repeat$))
       );
-      tick();
       repeat$.next();
-      tick();
       repeat$.next();
-    }));
+    });
 
     Then(() => {
       expect(observerSpy.getValuesLength()).toEqual(3);
@@ -44,7 +41,7 @@ describe('repeatSwitchMap', () => {
 
     When(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitchMap(() => repeat$))
+        source$.pipe(repeatSwitchMap(repeat$))
       );
       tick(100);
       repeat$.next();
@@ -67,7 +64,7 @@ describe('repeatSwitchMap', () => {
 
     When(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitchMap(() => repeat$))
+        source$.pipe(repeatSwitchMap(repeat$))
       );
       tick(100);
     }));
@@ -93,7 +90,7 @@ describe('repeatSwitchMap', () => {
 
     Then(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitchMap(() => repeat$))
+        source$.pipe(repeatSwitchMap(repeat$))
       );
 
       tick(50);
@@ -116,34 +113,6 @@ describe('repeatSwitchMap', () => {
       expect(observerSpy.getValuesLength()).toEqual(2);
       tick(50);
       expect(observerSpy.getValuesLength()).toEqual(3);
-    }));
-  });
-
-  describe(`GIVEN source emits with delay 
-            WHEN subscribing AND listening to source emissions before repeating with another delay
-            THEN receive values from the source at the right time`, () => {
-    Given(() => {
-      source$ = createObservableWithValues([
-        { value: 1, delay: 100 },
-        { complete: true }
-      ]);
-    });
-
-    Then(fakeAsync(() => {
-      observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitchMap(source => source.pipe(delay(200))))
-      );
-
-      tick(100);
-      expect(observerSpy.getValuesLength()).toEqual(1);
-      tick(200);
-      expect(observerSpy.getValuesLength()).toEqual(1);
-      tick(100);
-      expect(observerSpy.getValuesLength()).toEqual(2);
-      tick(300);
-      expect(observerSpy.getValuesLength()).toEqual(3);
-
-      observerSpy.unsubscribe();
     }));
   });
 
@@ -159,7 +128,7 @@ describe('repeatSwitchMap', () => {
 
     Then(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitchMap(() => repeat$))
+        source$.pipe(repeatSwitchMap(repeat$))
       );
       expect(observerSpy.getValues()).toEqual([]);
       tick(100);
@@ -177,78 +146,36 @@ describe('repeatSwitchMap', () => {
 
       When(fakeAsync(() => {
         observerSpy = subscribeSpyTo(
-          source$.pipe(repeatSwitchMap(() => timer(200), { repeatOnNotifierComplete }))
+          source$.pipe(repeatSwitchMap(timer(200)))
         );
         tick(800);
         observerSpy.unsubscribe();
       }));
 
-      describe('GIVEN repeatOnNotifierComplete is not set (true by default)', () => {
-
-        describe(`GIVEN the source never completes 
-                  WHEN subscribing to source 
-                  THEN repeatSwitchMap repeats AND never completes`, () => {
-          Given(() => {
-            source$ = createObservableWithValues([{ value: 1 }]);
-          });
-
-          Then(() => {
-            expect(observerSpy.getValuesLength()).toEqual(5);
-            expect(observerSpy.receivedComplete()).toBeFalse();
-          });
+      describe(`GIVEN the source does not complete
+                THEN repeatSwitchMap repeats until the notifier completes AND never completes`, () => {
+        Given(() => {
+          source$ = createObservableWithValues([{ value: 1 }]);
         });
 
-        describe(`GIVEN the source completes
-                  WHEN subscribing to source 
-                  THEN repeatSwitchMap repeats AND never completes`, () => {
-          Given(() => {
-            source$ = createObservableWithValues([
-              { value: 1 },
-              { complete: true }
-            ]);
-          });
-
-          Then(() => {
-            expect(observerSpy.getValuesLength()).toEqual(5);
-            expect(observerSpy.receivedComplete()).toBeFalse();
-          });
+        Then(() => {
+          expect(observerSpy.getValuesLength()).toEqual(2);
+          expect(observerSpy.receivedComplete()).toBeFalse();
         });
       });
 
-      describe('GIVEN repeatOnNotifierComplete is set to false', () => {
+      describe(`GIVEN the source completes
+                THEN repeatSwitchMap repeats until the notifier completes AND completes`, () => {
         Given(() => {
-          repeatOnNotifierComplete = false;
+          source$ = createObservableWithValues([
+            { value: 1 },
+            { complete: true }
+          ]);
         });
 
-        afterEach(() => { repeatOnNotifierComplete = undefined })
-
-        describe(`GIVEN the source does not complete
-                  WHEN subscribing to source 
-                  THEN repeatSwitchMap repeats until the notifier completes AND never completes`, () => {
-          Given(() => {
-            source$ = createObservableWithValues([{ value: 1 }]);
-          });
-
-          Then(() => {
-            expect(observerSpy.getValuesLength()).toEqual(2);
-            expect(observerSpy.receivedComplete()).toBeFalse();
-          });
-        });
-
-        describe(`GIVEN the source completes
-                  WHEN subscribing to source 
-                  THEN repeatSwitchMap repeats until the notifier completes AND completes`, () => {
-          Given(() => {
-            source$ = createObservableWithValues([
-              { value: 1 },
-              { complete: true }
-            ]);
-          });
-
-          Then(() => {
-            expect(observerSpy.getValuesLength()).toEqual(2);
-            expect(observerSpy.receivedComplete()).toBeTrue();
-          });
+        Then(() => {
+          expect(observerSpy.getValuesLength()).toEqual(2);
+          expect(observerSpy.receivedComplete()).toBeTrue();
         });
       });
     });
@@ -257,7 +184,7 @@ describe('repeatSwitchMap', () => {
   describe('error strategy', () => {
     When(fakeAsync(() => {
       observerSpy = subscribeSpyTo(
-        source$.pipe(repeatSwitchMap(() => repeat$)),
+        source$.pipe(repeatSwitchMap(repeat$)),
         { expectErrors: true }
       );
     }));

@@ -1,5 +1,5 @@
 import { Observable, MonoTypeOperatorFunction, Subject, NEVER, of, noop, defer, race } from 'rxjs';
-import { delay, shareReplay, take, switchMapTo } from 'rxjs/operators';
+import { delay, shareReplay, take, switchMapTo, repeatWhen } from 'rxjs/operators';
 
 import { repeatSwitchMap } from './repeat-switchmap';
 
@@ -50,16 +50,13 @@ export function cache<T>(config: {
 
   return source => {
     const inner = source.pipe(
-      repeatSwitchMap(complete =>
-        race(
-          config.refresher || NEVER,
-          complete.pipe(
-            delay(config.expirationTime),
-            switchMapTo(config.automaticRefresh ? of(noop) : newSub) // After source completion and cache expiration, resubscribe to source automatically if automaticRefresh or wait for a new subscriber
-          )
-        ).pipe(take(1)),
-        { repeatOnNotifierComplete: true }
+      repeatWhen(complete =>
+        complete.pipe(
+          delay(config.expirationTime),
+          switchMapTo(config.automaticRefresh ? of(noop) : newSub) // After source completion and cache expiration, resubscribe to source automatically if automaticRefresh or wait for a new subscriber
+        )
       ),
+      repeatSwitchMap(config.refresher || NEVER),
       shareReplay({ refCount: true, bufferSize: config.bufferSize || 1, windowTime: config.expirationTime })
     );
 
