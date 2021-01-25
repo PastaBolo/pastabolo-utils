@@ -12,20 +12,20 @@ import { repeatSwitchMap } from './repeat-switch';
  * Keep a value in cache for 10s
  * ```ts
  * const source$ = of('value');
- * source.pipe(cache({ expirationTime: 10000 })).subscribe(console.log);
+ * source$.pipe(cache({ expirationTime: 10000 })).subscribe(console.log);
  * ```
  * 
  * Keep a value in cache for 10s and refresh it automatically by resubscribing to the source when the cache expires
  * ```ts
  * const source$ = of('value');
- * source.pipe(cache({ expirationTime: 10000, automaticRefresh: true })).subscribe(console.log);
+ * source$.pipe(cache({ expirationTime: 10000, automaticRefresh: true })).subscribe(console.log);
  * ```
  * 
  * Keep a value in cache for 10s and refresh on click
  * ```ts
  * const source$ = of('value');
  * const documentClick$ = fromEvent(document, 'click');
- * source.pipe(cache({ expirationTime: 10000, refresher: documentClick$  })).subscribe(console.log);
+ * source$.pipe(cache({ expirationTime: 10000, refresher: documentClick$  })).subscribe(console.log);
  * ```
  *
  * Keep 3 values in cache (10s for each value)
