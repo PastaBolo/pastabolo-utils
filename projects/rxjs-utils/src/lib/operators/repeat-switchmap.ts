@@ -11,13 +11,13 @@ import { last, observeOn, repeat, share, startWith, switchMapTo } from 'rxjs/ope
  * ```ts
  * const source$ = of('Repeat message');
  * const documentClick$ = fromEvent(document, 'click');
- * source.pipe(repeatSwitchMap(() => documentClick$)).subscribe(console.log);
+ * source$.pipe(repeatSwitchMap(() => documentClick$)).subscribe(console.log);
  * ```
  * 
  * Repeat a message stream with a delay after source completion
  * ```ts
  * const source$ = of('Repeat message');
- * source.pipe(repeatSwitchMap(complete => complete.pipe(delay(200)))).subscribe(console.log);
+ * source$.pipe(repeatSwitchMap(complete => complete.pipe(delay(200)))).subscribe(console.log);
  * ```
  *
  * @param {function(notifications: Observable): Observable} notifier - Function that returns an observable of notifications that repeat the subscription to the source each time that observable emits. This function can get an observable as a parameter that only emits the last value from the source when source completes.
