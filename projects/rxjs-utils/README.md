@@ -32,7 +32,7 @@ yarn add @pastabolo/rxjs-utils
 
 ### ⚠️ The problem
 
-Sometimes, you want to reset the subscription to an observable by reacting to a list of triggers and then `switchMap` to te source.
+Sometimes, you want to reset the subscription to an observable by reacting to a list of triggers and then `switchMap` to the source.
 - It might be difficult to identify what is the source at first glance
 - You waste time and effort to understand what is going on (it may not be clear that the subscription to the source has to be reset each time a trigger emits)
 - You have to initiate the subscription manually (by using the `startWith` operator or by having a resetter which is a `BehaviorSubject` instead of a `Subject`)
